@@ -42,16 +42,7 @@ The app processes images locally using TensorFlow Lite models, ensuring fast per
 
 ---
 
-## Demo
-
-<p align="center">
-  <img src="./docs/demo.gif" width="300"/>
-</p>
-
----
-
 ## Screenshots
-
 <p align="center">
   <img src="./docs/screenshot.jpg" width="300"/>
 </p>
@@ -166,5 +157,3 @@ If you find this project useful, consider starring the repository.
 
 Клименко Михаил Сергеевич
 БрГТУ, факультет ЭИС, кафедра ИИТ, 2026
-
-```
