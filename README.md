@@ -1,4 +1,3 @@
-```markdown
 # PlantVision
 
 <p align="center">
