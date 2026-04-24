@@ -44,7 +44,7 @@ The app processes images locally using TensorFlow Lite models, ensuring fast per
 
 ## Screenshots
 <p align="center">
-  <img src="./docs/screenshot.jpg" width="300"/>
+  <img src="./docs/screenshot1.jpg" width="300"/>
 </p>
 
 ---
