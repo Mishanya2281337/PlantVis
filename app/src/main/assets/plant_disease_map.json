@@ -1,0 +1,41 @@
+{
+  "potato": [
+    "potato_healthy",
+    "potato_early_blight",
+    "potato_late_blight",
+    "potato_black_leg"
+  ],
+  "tomato": [
+    "tomato_healthy",
+    "tomato_early_blight",
+    "tomato_late_blight",
+    "tomato_bacterial_spot",
+    "tomato_leaf_mold",
+    "tomato_mosaic_virus",
+    "tomato_yellow_leaf_curl",
+    "tomato_septoria_leaf_spot"
+  ],
+  "cucumber": [
+    "cucumber_healthy",
+    "cucumber_powdery_mildew",
+    "cucumber_downy_mildew",
+    "cucumber_mosaic_virus"
+  ],
+  "wheat": [
+    "wheat_healthy",
+    "wheat_leaf_rust",
+    "wheat_powdery_mildew"
+  ],
+  "corn": [
+    "corn_common_rust",
+    "corn_northern_blight"
+  ],
+  "houseplants_general": [
+    "houseplant_root_rot",
+    "houseplant_powdery_mildew",
+    "houseplant_spider_mite",
+    "houseplant_scale_insect",
+    "houseplant_aphid",
+    "houseplant_leaf_yellowing"
+  ]
+}

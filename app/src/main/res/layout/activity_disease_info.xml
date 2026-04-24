@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF8F0"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Заголовок -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔬 Диагностика болезней"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#BF360C"
+            android:gravity="center"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сфотографируйте больной лист или растение целиком"
+            android:textSize="12sp"
+            android:textColor="#E64A19"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Фото -->
+        <ImageView
+            android:id="@+id/diseaseImageView"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"
+            android:background="#FFCCBC"
+            android:src="@drawable/ic_launcher_foreground"
+            android:contentDescription="Фото растения"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Кнопки -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <Button
+                android:id="@+id/diseaseBtnCamera"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="📷 Камера"
+                android:backgroundTint="#E64A19"
+                android:textColor="#FFFFFF"/>
+
+            <Button
+                android:id="@+id/diseaseBtnGallery"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="🖼 Галерея"
+                android:backgroundTint="#BF360C"
+                android:textColor="#FFFFFF"/>
+
+        </LinearLayout>
+
+        <!-- Прогресс / статус -->
+        <ProgressBar
+            android:id="@+id/diseaseProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            android:layout_marginBottom="6dp"/>
+
+        <TextView
+            android:id="@+id/diseaseTvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Загрузка модели..."
+            android:textColor="#555"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Карточка результата -->
+        <LinearLayout
+            android:id="@+id/diseaseCardResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp"
+            android:elevation="3dp"
+            android:visibility="gone">
+
+            <!-- Диагноз -->
+            <TextView
+                android:id="@+id/tvDiseaseName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#BF360C"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvDiseaseConfidence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="#888"
+                android:layout_marginBottom="6dp"/>
+
+            <TextView
+                android:id="@+id/tvPathogen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="#555"
+                android:layout_marginBottom="2dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:id="@+id/tvSeverity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12sp"
+                    android:textColor="#E64A19"/>
+
+                <TextView
+                    android:id="@+id/tvSpread"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12sp"
+                    android:textColor="#888"/>
+
+            </LinearLayout>
+
+            <!-- Срочность -->
+            <TextView
+                android:id="@+id/tvUrgency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"/>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="#F0E0D0" android:layout_marginBottom="12dp"/>
+
+            <!-- Симптомы -->
+            <LinearLayout android:id="@+id/sectionSymptoms"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:layout_marginBottom="10dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="🔍 Симптомы" android:textSize="14sp"
+                    android:textStyle="bold" android:textColor="#BF360C"
+                    android:layout_marginBottom="4dp"/>
+                <TextView android:id="@+id/tvSymptoms"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:textSize="13sp" android:textColor="#444"
+                    android:lineSpacingMultiplier="1.4"/>
+            </LinearLayout>
+
+            <!-- Причины -->
+            <LinearLayout android:id="@+id/sectionCauses"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:layout_marginBottom="10dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="⚡ Причины" android:textSize="14sp"
+                    android:textStyle="bold" android:textColor="#E65100"
+                    android:layout_marginBottom="4dp"/>
+                <TextView android:id="@+id/tvCauses"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:textSize="13sp" android:textColor="#444"
+                    android:lineSpacingMultiplier="1.4"/>
+            </LinearLayout>
+
+            <!-- Лечение -->
+            <LinearLayout android:id="@+id/sectionTreatment"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:layout_marginBottom="10dp"
+                android:background="#FFF3E0" android:padding="10dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="💊 Лечение" android:textSize="14sp"
+                    android:textStyle="bold" android:textColor="#E65100"
+                    android:layout_marginBottom="4dp"/>
+                <TextView android:id="@+id/tvTreatment"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:textSize="13sp" android:textColor="#333"
+                    android:lineSpacingMultiplier="1.5"/>
+            </LinearLayout>
+
+            <!-- Профилактика -->
+            <LinearLayout android:id="@+id/sectionPrevention"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:layout_marginBottom="10dp"
+                android:background="#E8F5E9" android:padding="10dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="🛡 Профилактика" android:textSize="14sp"
+                    android:textStyle="bold" android:textColor="#2E7D32"
+                    android:layout_marginBottom="4dp"/>
+                <TextView android:id="@+id/tvPrevention"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:textSize="13sp" android:textColor="#333"
+                    android:lineSpacingMultiplier="1.5"/>
+            </LinearLayout>
+
+            <!-- Другие варианты -->
+            <TextView
+                android:id="@+id/tvDiseaseOther"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="#999"
+                android:lineSpacingMultiplier="1.4"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+        <!-- Подпись -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Диагностика носит рекомендательный характер. При серьёзных заболеваниях обратитесь к агроному."
+            android:textSize="10sp"
+            android:textColor="#BBBBBB"
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,1 @@
+# Сюда поместить plant_classifier.tflite
