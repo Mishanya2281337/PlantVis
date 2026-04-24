@@ -1,79 +1,171 @@
-# PlantVisReborn 🌿
+```markdown
+# PlantVision
 
-Android-приложение для определения растений с помощью AI.
+<p align="center">
+  <img src="./docs/icon.png" width="120" />
+</p>
 
-## Интегрированная нейросеть
-
-**TensorFlow Lite + MobileNetV2** (Apache 2.0)
-- GitHub: https://github.com/tensorflow/tensorflow
-- Специально оптимизирован для мобильных устройств
-- Поддержка GPU-ускорения через TFLite GPU Delegate
+<p align="center">
+  Intelligent Android application for plant recognition and health analysis using on-device machine learning
+</p>
 
 ---
 
-## ⚠️ Шаг 1: Скачать модель
+<p align="center">
 
-Проект требует файл модели `plant_classifier.tflite` в папке:
-```
-app/src/main/assets/plant_classifier.tflite
-```
+![Platform](https://img.shields.io/badge/platform-Android-green)
+![Kotlin](https://img.shields.io/badge/Kotlin-1.9-blue)
+![TensorFlow Lite](https://img.shields.io/badge/TFLite-Enabled-orange)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
+![Status](https://img.shields.io/badge/status-active-success)
 
-### Вариант A — MobileNetV2 (общий, ImageNet 1000 классов)
-Подходит для быстрого старта, распознаёт некоторые растения:
+</p>
+
+---
+
+## Overview
+
+PlantVision is an Android application that uses on-device machine learning to identify plant species and analyze their health condition.  
+The app processes images locally using TensorFlow Lite models, ensuring fast performance and full offline functionality.
+
+---
+
+## Features
+
+- Plant recognition from images  
+- Species identification  
+- Plant disease detection and health analysis  
+- Care recommendations based on results  
+- Fully offline processing  
+- Integrated ML models:
+  - `plant_classifier`
+  - `disease_classifier`
+
+---
+
+## Demo
+
+<p align="center">
+  <img src="./docs/demo.gif" width="300"/>
+</p>
+
+---
+
+## Screenshots
+
+<p align="center">
+  <img src="./docs/screenshot.jpg" width="300"/>
+</p>
+
+---
+
+## Architecture
+
+The application follows a clean and modular structure, separating UI, business logic, and ML processing.
+
+Core flow:
+
+1. Image input (camera or gallery)  
+2. Image preprocessing  
+3. Inference using TensorFlow Lite  
+4. Aggregation of results  
+5. Display of classification and recommendations  
+
+---
+
+## Tech Stack
+
+- Kotlin  
+- Android SDK  
+- TensorFlow Lite  
+- Material Design  
+- Gradle (Kotlin DSL)  
+
+---
+
+## Performance
+
+- Optimized for mobile inference  
+- Supports hardware acceleration (GPU delegate when available)  
+- Low latency predictions  
+- No network dependency  
+
+---
+
+## Getting Started
+
 ```bash
-# Скачать с TFHub
-wget https://storage.googleapis.com/download.tensorflow.org/models/tflite/mobilenet_v2_1.0_224.tflite \
-     -O app/src/main/assets/plant_classifier.tflite
+git clone https://github.com/your-username/PlantVision.git
+cd PlantVision
 ```
 
-### Вариант B — EfficientNet на Oxford 102 Flowers (рекомендуется)
-Специально обучен на цветах, 102 вида:
-1. Перейти: https://www.kaggle.com/models/google/aiy-vision-classifier-plants-v1
-2. Скачать файл `.tflite`
-3. Сохранить как `app/src/main/assets/plant_classifier.tflite`
+Open the project in **Android Studio** and run:
 
-### Вариант C — PlantNet TFLite
-Крупнейшая база растений, 10 000+ видов:
-1. Перейти: https://github.com/plantnet/plant-id-api
-2. Следовать инструкциям по экспорту модели
-
----
-
-## Архитектура
-
-```
-MainActivity.kt          ← UI: камера/галерея, отображение результатов
-PlantClassifier.kt       ← Обёртка TFLite: загрузка модели, инференс
-assets/
-  plant_classifier.tflite  ← Модель (нужно скачать)
-res/layout/
-  activity_main.xml      ← Разметка экрана
+```bash
+Run → Run 'app'
 ```
 
-## Зависимости
+## Project Structure
 
-```kotlin
-// build.gradle.kts
-implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.4")
-implementation("org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.4")
-implementation("org.tensorflow:tensorflow-lite-gpu:2.14.0")
+```
+app/
+ ├── src/main/
+ │   ├── java/        # application logic
+ │   ├── res/         # UI resources
+ │   └── assets/      # ML models
 ```
 
-## Как заменить модель
+## How It Works
 
-В `PlantClassifier.kt` просто смените константу:
-```kotlin
-private const val MODEL_FILE = "your_model.tflite"
+```mermaid
+graph TD
+    A[Plant Image] --> B[Preprocessing]
+    B --> C[plant_classifier]
+    B --> D[disease_classifier]
+    C --> E[Species Identification]
+    D --> F[Health Analysis]
+    E --> G[Final Result]
+    F --> G
 ```
 
-Если у модели другой размер входа (не 224×224):
-```kotlin
-private const val INPUT_SIZE = 320  // например
+## Roadmap
+
+- Extended plant database
+- Favorites system
+- Recognition history
+- Multi-language support
+- Improved model accuracy
+
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repository  
+2. Create a feature branch (`feature/...`)  
+3. Commit your changes  
+4. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License.
+
+## Contact
+
+For questions or suggestions, open an issue in the repository.
+
+## Acknowledgements
+
+- TensorFlow Lite team  
+- Open-source ML community  
+- Android development community
+
+## Support
+
+If you find this project useful, consider starring the repository.
+
+## Author
+
+Клименко Михаил Сергеевич
+БрГТУ, факультет ЭИС, кафедра ИИТ, 2026
+
 ```
-
----
-
-## Лицензии
-
-- TensorFlow Lite: [Apache 2.0](https://github.com/tensorflow/tensorflow/blob/master/LICENSE)
-- Приложение PlantVisReborn: MIT
