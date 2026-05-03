@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "com.example.plantvisreborn"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.plantvisreborn"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -30,7 +30,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    // Не сжимать .tflite модели
     androidResources {
         noCompress += "tflite"
     }
@@ -42,10 +41,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity.ktx)
 
-    // TensorFlow Lite — open-source (Apache 2.0), github.com/tensorflow/tensorflow
-    implementation(libs.tflite.task.vision)
-    implementation(libs.tflite.gpu.delegate)
-    implementation(libs.tflite.gpu)
+    // LiteRT (переименованный TensorFlow Lite от Google)
+    implementation(libs.litert)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

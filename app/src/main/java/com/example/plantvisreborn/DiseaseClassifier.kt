@@ -2,72 +2,83 @@ package com.example.plantvisreborn
 
 import android.content.Context
 import android.graphics.Bitmap
-import org.tensorflow.lite.support.image.ImageProcessor
-import org.tensorflow.lite.support.image.TensorImage
-import org.tensorflow.lite.support.image.ops.ResizeOp
-import org.tensorflow.lite.task.vision.classifier.Classifications
-import org.tensorflow.lite.task.vision.classifier.ImageClassifier
-import org.tensorflow.lite.task.core.BaseOptions
+import android.graphics.Color
+import org.tensorflow.lite.Interpreter
+import java.io.FileInputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+import java.nio.channels.FileChannel
 
 /**
- * DiseaseClassifier — TFLite-модель для распознавания болезней растений.
- *
- * Использует модель, обученную на PlantVillage + iNaturalist.
- * Файл модели: assets/disease_classifier.tflite
+ * DiseaseClassifier — определяет ТИП болезни (6 классов).
+ * Выход модели: [1, 6] — healthy, chlorosis, leaf_burn, mealybug, root_rot, spider_mite
+ * Полный лейбл формируется как "{plant}_{disease}" снаружи.
  */
 class DiseaseClassifier(private val context: Context) {
 
     companion object {
-        private const val MODEL_FILE      = "disease_classifier.tflite"
-        private const val MAX_RESULTS     = 3
-        private const val SCORE_THRESHOLD = 0.05f
-        private const val INPUT_SIZE      = 224
+        private const val MODEL_FILE  = "disease_classifier.tflite"
+        private const val MAX_RESULTS = 3
+        private const val THRESHOLD   = 0.05f
+        private const val INPUT_SIZE  = 260
+
+        // 6 типов болезней — порядок должен совпадать с выходом модели
+        val DISEASE_TYPES = listOf(
+            "healthy", "chlorosis", "leaf_burn", "mealybug", "root_rot", "spider_mite"
+        )
+
+        val DISEASE_TYPE_RU = mapOf(
+            "healthy"     to "Здорово",
+            "chlorosis"   to "Хлороз",
+            "leaf_burn"   to "Ожог листьев",
+            "mealybug"    to "Мучнистый червец",
+            "root_rot"    to "Корневая гниль",
+            "spider_mite" to "Паутинный клещ"
+        )
     }
 
-    private var classifier: ImageClassifier? = null
-
-    private val imageProcessor = ImageProcessor.Builder()
-        .add(ResizeOp(INPUT_SIZE, INPUT_SIZE, ResizeOp.ResizeMethod.BILINEAR))
-        .build()
+    private var interpreter: Interpreter? = null
 
     fun setup() {
-        val baseOptions = BaseOptions.builder().useGpu().build()
-        val options = ImageClassifier.ImageClassifierOptions.builder()
-            .setBaseOptions(baseOptions)
-            .setMaxResults(MAX_RESULTS)
-            .setScoreThreshold(SCORE_THRESHOLD)
-            .build()
-        try {
-            classifier = ImageClassifier.createFromFileAndOptions(context, MODEL_FILE, options)
-        } catch (e: Exception) {
-            val cpuOptions = ImageClassifier.ImageClassifierOptions.builder()
-                .setMaxResults(MAX_RESULTS)
-                .setScoreThreshold(SCORE_THRESHOLD)
-                .build()
-            classifier = ImageClassifier.createFromFileAndOptions(context, MODEL_FILE, cpuOptions)
-        }
+        val afd = context.assets.openFd(MODEL_FILE)
+        val buffer = FileInputStream(afd.fileDescriptor).channel
+            .map(FileChannel.MapMode.READ_ONLY, afd.startOffset, afd.declaredLength)
+        val opts = Interpreter.Options()
+        opts.numThreads = 4
+        interpreter = Interpreter(buffer, opts)
     }
 
     fun classify(bitmap: Bitmap): List<DiseaseResult> {
-        val tensorImage = TensorImage.fromBitmap(bitmap)
-        val processed   = imageProcessor.process(tensorImage)
-        val results: List<Classifications> = classifier?.classify(processed) ?: return emptyList()
-
-        return results.flatMap { it.categories }
-            .map { cat -> DiseaseResult(cat.label, cat.score) }
-            .sortedByDescending { it.confidence }
+        val interp = interpreter ?: return emptyList()
+        val input = bitmapToByteBuffer(bitmap, INPUT_SIZE)
+        val output = Array(1) { FloatArray(DISEASE_TYPES.size) }
+        interp.run(input, output)
+        return output[0].mapIndexed { i, score ->
+            DiseaseResult(DISEASE_TYPES[i], score)
+        }.filter { it.confidence >= THRESHOLD }
+         .sortedByDescending { it.confidence }
+         .take(MAX_RESULTS)
     }
 
-    fun close() {
-        classifier?.close()
-        classifier = null
+    fun close() { interpreter?.close(); interpreter = null }
+
+    private fun bitmapToByteBuffer(bitmap: Bitmap, size: Int): ByteBuffer {
+        val scaled = Bitmap.createScaledBitmap(bitmap, size, size, true)
+        val buf = ByteBuffer.allocateDirect(4 * size * size * 3)
+        buf.order(ByteOrder.nativeOrder())
+        for (y in 0 until size) for (x in 0 until size) {
+            val px = scaled.getPixel(x, y)
+            buf.putFloat(Color.red(px) / 255f)
+            buf.putFloat(Color.green(px) / 255f)
+            buf.putFloat(Color.blue(px) / 255f)
+        }
+        buf.rewind()
+        return buf
     }
 
-    data class DiseaseResult(
-        val label: String,
-        val confidence: Float
-    ) {
+    data class DiseaseResult(val diseaseType: String, val confidence: Float) {
         val confidencePercent: String get() = "%.1f%%".format(confidence * 100)
-        val isHealthy: Boolean get() = label.contains("healthy", ignoreCase = true)
+        val isHealthy: Boolean get() = diseaseType == "healthy"
+        val nameRu: String get() = DISEASE_TYPE_RU[diseaseType] ?: diseaseType
     }
 }

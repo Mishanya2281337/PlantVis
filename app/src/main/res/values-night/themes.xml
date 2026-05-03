@@ -1,16 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.PlantVisReborn" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+    <style name="Theme.PlantVisReborn" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">#4CAF70</item>
+        <item name="colorPrimaryVariant">#1B5E20</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#81C784</item>
+        <item name="colorOnSecondary">#000000</item>
+        <item name="android:statusBarColor">#0A1F0F</item>
+        <item name="android:windowBackground">@drawable/bg_main</item>
+        <item name="android:navigationBarColor">#0A1F0F</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 </resources>

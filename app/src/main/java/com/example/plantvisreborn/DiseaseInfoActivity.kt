@@ -133,13 +133,13 @@ class DiseaseInfoActivity : AppCompatActivity() {
 
     private fun showResults(results: List<DiseaseClassifier.DiseaseResult>) {
         val top  = results.first()
-        val info = advisor.getInfo(top.label)
+        val info = advisor.getInfo(top.diseaseType)
 
         tvConfidence.text = "Уверенность: ${top.confidencePercent}"
 
         if (info == null) {
             // Модель ещё не обучена — показать технические метки
-            tvDiseaseName.text = formatLabel(top.label)
+            tvDiseaseName.text = formatLabel(top.diseaseType)
             tvPathogen.text    = ""
             tvSeverity.text    = ""
             tvSpread.text      = ""
@@ -171,8 +171,8 @@ class DiseaseInfoActivity : AppCompatActivity() {
         // Прочие варианты
         if (results.size > 1) {
             val others = results.drop(1).joinToString("\n") {
-                val otherInfo = advisor.getInfo(it.label)
-                val name = otherInfo?.nameRu ?: formatLabel(it.label)
+                val otherInfo = advisor.getInfo(it.diseaseType)
+                val name = otherInfo?.nameRu ?: formatLabel(it.diseaseType)
                 "• $name — ${it.confidencePercent}"
             }
             tvOtherResults.text = "Другие варианты:\n$others"
