@@ -42,7 +42,7 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
 
     // LiteRT (переименованный TensorFlow Lite от Google)
-    implementation(libs.litert)
+    implementation(libs.tensorflow.lite)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

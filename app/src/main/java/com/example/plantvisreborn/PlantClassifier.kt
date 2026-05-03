@@ -81,11 +81,13 @@ class PlantClassifier(private val context: Context) {
         val scaled = Bitmap.createScaledBitmap(bitmap, size, size, true)
         val buf = ByteBuffer.allocateDirect(4 * size * size * 3)
         buf.order(ByteOrder.nativeOrder())
+        // В методе bitmapToByteBuffer замени цикл на этот:
         for (y in 0 until size) for (x in 0 until size) {
             val px = scaled.getPixel(x, y)
-            buf.putFloat(Color.red(px) / 255f)
-            buf.putFloat(Color.green(px) / 255f)
-            buf.putFloat(Color.blue(px) / 255f)
+            // Подаем чистые значения 0..255
+            buf.putFloat(Color.red(px).toFloat())
+            buf.putFloat(Color.green(px).toFloat())
+            buf.putFloat(Color.blue(px).toFloat())
         }
         buf.rewind()
         return buf
